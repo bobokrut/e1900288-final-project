@@ -8,7 +8,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DATABASE_URL")
+DATABASE_URL = environ.get("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL.replace(DATABASE_URL.split("://")[0], "postgresql+psycopg2", 1)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
