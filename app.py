@@ -7,12 +7,7 @@ from os import environ
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-POSTGRES_URL = environ.get("POSTGRES_URL")
-POSTGRES_USER = environ.get("POSTGRES_USER")
-POSTGRES_PW = environ.get("POSTGRES_PW")
-POSTGRES_DB = environ.get("POSTGRES_DB")
-DB_URL = f'postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PW}@{POSTGRES_URL}/{POSTGRES_DB}'
-app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -21,22 +16,28 @@ from models import *
 load_dotenv()
 db.create_all()
 
+
 @app.route('/images/<int:img_id>', methods=['GET'])
 def get_image_from_db(img_id):
-    image = GallaryImage.query.get_or_404(img_id)
-    return app.response_class(image.img_data, mimetype='application/octet-stream')
+    image = GallaryImage.query.filter(GallaryImage.id == img_id).with_entities(GallaryImage.img_data).first()
+    if image:
+        return app.response_class(image[0], mimetype='application/octet-stream')
+    return 404
 
 
 @app.route('/thumbs/<int:img_id>', methods=['GET'])
 def get_thumb_from_db(img_id):
-    image = GallaryImage.query.get_or_404(img_id)
-    return app.response_class(image.img_thumb, mimetype='application/octet-stream')
+    image = GallaryImage.query.filter(GallaryImage.id == img_id).with_entities(GallaryImage.img_thumb).first()
+    if image:
+        return app.response_class(image[0], mimetype='application/octet-stream')
+    return 404
 
 
 @app.route("/", methods=["GET"])
 def index():
-    images = GallaryImage.query.all()
+    images = GallaryImage.query.with_entities(GallaryImage.id, GallaryImage.img_width, GallaryImage.img_height).all()
     return render_template("index.html", images=images)
+
 
 @app.route('/upload', methods=["POST"])
 def upload():  # put application's code here
@@ -57,4 +58,3 @@ def upload():  # put application's code here
     db.session.commit()
 
     return redirect("/")
-
