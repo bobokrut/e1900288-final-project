@@ -2,10 +2,11 @@ from io import BytesIO
 
 from PIL import Image
 from flask import Flask, request, render_template, redirect
-from dotenv import load_dotenv
 from os import environ
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
 
+load_dotenv()
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -13,8 +14,6 @@ db = SQLAlchemy(app)
 
 from models import *
 
-load_dotenv()
-db.create_all()
 
 
 @app.route('/images/<int:img_id>', methods=['GET'])
@@ -58,3 +57,7 @@ def upload():  # put application's code here
     db.session.commit()
 
     return redirect("/")
+
+if __name__ == "__main__":
+    db.create_all()
+    app.run()
