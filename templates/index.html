@@ -50,7 +50,7 @@
         <h1 class=''>File uploading</h1>
         <div class="mb-3">
             <!-- <label for="formFile" class=""></label> -->
-            <input class="form-control" type="file" id="photo" name="photo" required accept="image/*">
+            <input class="form-control" type="file" id="photo" name="photo" required accept="image/png, image/jpeg">
         </div>
         <button type="submit" class="btn btn-dark">Upload</button>
     </form>
@@ -70,13 +70,13 @@
     <div class="p-3" id="my-gallery">
 
         {% for image in images %}
-            <a href="/images/{{ image.id }}"
-               data-pswp-width="{{ image.img_width }}"
-               data-pswp-height="{{ image.img_height }}"
+            <a href="/images/{{ image[0] }}"
+               data-pswp-width="{{ image[1] }}"
+               data-pswp-height="{{ image[2] }}"
                target="_blank"
                data-cropped="false"
                 onload="">
-                <img src="{{url_for('get_thumb_from_db', img_id=image['id'])}}" alt=""/>
+                <img src="{{url_for('get_thumb_from_db', img_id=image[0])}}" alt=""/>
             </a>
         {% endfor %}
 
