@@ -16,4 +16,4 @@ jobs:
           heroku_app_name: "e1900288-final-project" #Must be unique in Heroku
           heroku_email: "e1900288@edu.vamk.fi"
         env:
-          SECRET_KEY: ${{secrets.SECRET_KEY}}
+          HD_SECRET_KEY: ${{secrets.SECRET_KEY}}
