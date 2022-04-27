@@ -22,7 +22,7 @@ def get_image_from_db(img_id):
     image = GallaryImage.query.filter(GallaryImage.id == img_id).with_entities(GallaryImage.img_data).first()
     if image:
         return app.response_class(image[0], mimetype='application/octet-stream')
-    return 404
+    return "Image not found", 404
 
 
 @app.route('/thumbs/<int:img_id>', methods=['GET'])
@@ -30,7 +30,7 @@ def get_thumb_from_db(img_id):
     image = GallaryImage.query.filter(GallaryImage.id == img_id).with_entities(GallaryImage.img_thumb).first()
     if image:
         return app.response_class(image[0], mimetype='application/octet-stream')
-    return 404
+    return "Image not found", 404
 
 
 @app.route("/", methods=["GET"])
