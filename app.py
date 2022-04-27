@@ -84,7 +84,7 @@ def logout():
 @app.route('/images/<int:img_id>', methods=['GET'])
 @login_required
 def get_image_from_db(img_id):
-    image = GalleryImage.query.filter(GalleryImage.id == img_id).with_entities(GalleryImage.img_data).first()
+    image = GalleryImage.query.filter(GalleryImage.id == img_id, GalleryImage.user_id == current_user.id).with_entities(GalleryImage.img_data).first()
     if image:
         return app.response_class(image[0], mimetype='application/octet-stream')
     return "Image not found", 404
@@ -93,7 +93,7 @@ def get_image_from_db(img_id):
 @app.route('/thumbs/<int:img_id>', methods=['GET'])
 @login_required
 def get_thumb_from_db(img_id):
-    image = GalleryImage.query.filter(GalleryImage.id == img_id).with_entities(GalleryImage.img_thumb).first()
+    image = GalleryImage.query.filter(GalleryImage.id == img_id, GalleryImage.user_id == current_user.id).with_entities(GalleryImage.img_thumb).first()
     if image:
         return app.response_class(image[0], mimetype='application/octet-stream')
     return "Image not found", 404
@@ -102,7 +102,7 @@ def get_thumb_from_db(img_id):
 @app.route("/", methods=["GET"])
 @login_required
 def index():
-    images = GalleryImage.query.with_entities(GalleryImage.id, GalleryImage.img_width, GalleryImage.img_height).all()
+    images = GalleryImage.query.filter(GalleryImage.user_id == current_user.id).with_entities(GalleryImage.id, GalleryImage.img_width, GalleryImage.img_height).all()
     return render_template("index.html", images=images, username=current_user.username)
 
 
@@ -121,7 +121,7 @@ def upload():
     stream = BytesIO()
     image.save(stream, ext)
 
-    image = GalleryImage(img_filename=filename, img_data=blob, img_thumb=stream.getvalue(), img_width=width, img_height=height)
+    image = GalleryImage(img_filename=filename, img_data=blob, img_thumb=stream.getvalue(), img_width=width, img_height=height, user_id=current_user.id)
     db.session.add(image)
     db.session.commit()
 
