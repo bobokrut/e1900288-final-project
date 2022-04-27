@@ -2,7 +2,7 @@ from io import BytesIO
 
 from PIL import Image
 from flask import Flask, request, render_template, redirect, flash, url_for
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from os import environ
 from flask_sqlalchemy import SQLAlchemy
@@ -103,7 +103,7 @@ def get_thumb_from_db(img_id):
 @login_required
 def index():
     images = GalleryImage.query.with_entities(GalleryImage.id, GalleryImage.img_width, GalleryImage.img_height).all()
-    return render_template("index.html", images=images)
+    return render_template("index.html", images=images, username=current_user.username)
 
 
 @app.route('/upload', methods=["POST"])
