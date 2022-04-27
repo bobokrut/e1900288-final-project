@@ -63,6 +63,7 @@
                 <span class="fs-2 me-lg-auto">My gallery</span>
                 <div class="col-md-3 text-end">
                     <button class="btn btn-outline-light me-2" type="button" onclick="show_form()">Add image</button>
+                    <button class="btn btn-outline-light" type="button" onclick="location.href='/logout'">Logout</button>
                 </div>
             </div>
         </div>
@@ -79,37 +80,6 @@
                 <img src="{{url_for('get_thumb_from_db', img_id=image[0])}}" alt=""/>
             </a>
         {% endfor %}
-
-        <!--
-             <a href="https://cdn.photoswipe.com/photoswipe-demo-images/photos/7/img-2500.jpg"
-                data-pswp-width="1669"
-                data-pswp-height="2500"
-                target="_blank">
-                 <img src="https://cdn.photoswipe.com/photoswipe-demo-images/photos/7/img-200.jpg" alt=""/>
-             </a>
-
-
-             <a href="https://cdn.photoswipe.com/photoswipe-demo-images/photos/6/img-2500.jpg"
-                data-pswp-width="1669"
-                data-pswp-height="2500"
-                target="_blank">
-                 <img src="https://cdn.photoswipe.com/photoswipe-demo-images/photos/6/img-200.jpg" alt=""/>
-             </a>
-
-             <a href="https://cdn.photoswipe.com/photoswipe-demo-images/photos/6/img-2500.jpg"
-                data-pswp-width="1669"
-                data-pswp-height="2500"
-                target="_blank">
-                 <img src="https://cdn.photoswipe.com/photoswipe-demo-images/photos/6/img-200.jpg" alt=""/>
-             </a>
-
-             <a href="https://cdn.photoswipe.com/photoswipe-demo-images/photos/3/img-2500.jpg"
-                data-pswp-width="1669"
-                data-pswp-height="2500"
-                target="_blank">
-                 <img src="https://cdn.photoswipe.com/photoswipe-demo-images/photos/3/img-200.jpg" alt=""/>
-             </a>
-         -->
     </div>
 </div>
 </body>
