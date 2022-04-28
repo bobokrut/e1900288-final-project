@@ -5,6 +5,9 @@ on:
     branches:
       - master
 
+env:
+  DATABASE_URL: "postgresql+psycopg2://postgres:postgres@localhost/postgres"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -32,9 +35,9 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Running tests
-        run: pytest
-        env:
-          DATABASE_URL: "postgresql+psycopg2://postgres:postgres@localhost/postgres"
+        run: |
+          echo $DATABASE_URL
+          pytest
 
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
