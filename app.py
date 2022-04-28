@@ -34,6 +34,10 @@ def signup_post():
     username = request.form.get('username')
     password = request.form.get('password')
 
+    if not app.config.get("TESTING") and username == "test":
+        flash("Username 'test' is reserved for testing")
+        return redirect(url_for('login_get'))
+
     user = User.query.filter_by(username=username).first()
 
     if user:
@@ -62,8 +66,9 @@ def login_post():
     user = User.query.filter_by(username=username).first()
 
     if not user or not check_password_hash(user.password, password):
+
         flash('Please check your login details and try again.')
-        return redirect(url_for('login_get'))  # if the user doesn't exist or password is wrong, reload the page
+        return redirect(url_for('login_get'))
 
     login_user(user, remember=remember)
     return redirect("/")
@@ -130,4 +135,4 @@ def upload():
 
 if __name__ == "__main__":
     db.create_all()
-    app.run()
+    app.run(debug=False)
