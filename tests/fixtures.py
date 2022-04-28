@@ -5,7 +5,7 @@ from flask_login import current_user
 from pathlib import Path
 
 resources = Path(__file__).parent / "files"
-
+db.create_all()
 
 @pytest.fixture()
 def anonymous_client():
