@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 app = Flask(__name__)
-DATABASE_URL = environ.get("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/postgres")
+DATABASE_URL = environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL.replace(DATABASE_URL.split("://")[0], "postgresql+psycopg2", 1)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = environ.get("SECRET_KEY")

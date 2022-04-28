@@ -33,6 +33,9 @@ jobs:
 
       - name: Running tests
         run: pytest
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+          SECRET_KEY: ${{secrets.SECRET_KEY}}
 
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:

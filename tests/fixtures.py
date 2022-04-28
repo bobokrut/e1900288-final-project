@@ -8,7 +8,6 @@ resources = Path(__file__).parent / "files"
 
 @pytest.fixture()
 def anonymous_client():
-    app.config.update({"TESTING": True})
     return app.test_client()
 
 
