@@ -1,7 +1,8 @@
 [![Python 3.10.4](https://img.shields.io/badge/python-3.10-blue.svg?style=flat&logo=python)](https://www.python.org/downloads/release/python-314/)
 [![CI](https://github.com/bobokrut/e1900288-final-project/actions/workflows/ci.yml/badge.svg)](https://github.com/bobokrut/e1900288-final-project/actions)
 
-# [Simple Gallery](https://e1900288-final-project.herokuapp.com)
+# Simple Gallery
+https://e1900288-final-project.herokuapp.com
 ### Egor Evlampiev (e1900288)
 
 ### Contents
