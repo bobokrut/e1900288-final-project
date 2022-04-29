@@ -6,13 +6,16 @@ from pathlib import Path
 
 resources = Path(__file__).parent / "files"
 
+
 @pytest.fixture()
 def anonymous_client():
+    """ fixture with simple client """
     return app.test_client()
 
 
 @pytest.fixture()
 def client_for_signin(anonymous_client):
+    """ fixture with client that has an account """
     with anonymous_client:
         anonymous_client.post("/signup", data={"email": "test@test.com", "username": "test", "password": "test"})
         yield anonymous_client
@@ -22,6 +25,7 @@ def client_for_signin(anonymous_client):
 
 @pytest.fixture()
 def client(anonymous_client):
+    """ fixture with logged in client """
     with anonymous_client:
         anonymous_client.post("/signup", data={"email": "test@test.com", "username": "test", "password": "test"})
         anonymous_client.post("/login", data={"username": "test", "password": "test"})

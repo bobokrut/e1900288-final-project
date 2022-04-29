@@ -10,13 +10,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 app = Flask(__name__)
-DATABASE_URL = environ.get("DATABASE_URL")
+DATABASE_URL = environ.get("DATABASE_URL")  # in Heroku this variable is always presenting
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL.replace(DATABASE_URL.split("://")[0], "postgresql+psycopg2", 1)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = environ.get("SECRET_KEY")
+app.config['SECRET_KEY'] = environ.get("SECRET_KEY")  # is needed for login to work
 db = SQLAlchemy(app)
 login_manager = LoginManager()
-login_manager.login_view = 'login_get'
+login_manager.login_view = 'login_get'  # url for login page
 login_manager.init_app(app)
 
 from models import *
@@ -24,7 +24,6 @@ from models import *
 
 @login_manager.user_loader
 def load_user(user_id):
-    # since the user_id is just the primary key of our user table, use it in the query for the user
     return User.query.get(int(user_id))
 
 
@@ -34,13 +33,9 @@ def signup_post():
     username = request.form.get('username')
     password = request.form.get('password')
 
-    if not app.config.get("TESTING") and username == "test":
-        flash("Username 'test' is reserved for testing")
-        return redirect(url_for('login_get'))
-
     user = User.query.filter_by(username=username).first()
 
-    if user:
+    if user:  # checkin if user exists in the table
         flash('Email address already exists')
         return redirect(url_for('login_get'))
 
@@ -61,12 +56,11 @@ def signup_get():
 def login_post():
     username = request.form.get('username')
     password = request.form.get('password')
-    remember = True
+    remember = True  # always remember login information
 
     user = User.query.filter_by(username=username).first()
 
     if not user or not check_password_hash(user.password, password):
-
         flash('Please check your login details and try again.')
         return redirect(url_for('login_get'))
 
@@ -119,13 +113,14 @@ def upload():
     ext = ext if ext != "jpg" else "jpeg"
     blob = request.files.get("photo").read()
 
+    # start of the thumbnail creation
     image = Image.open(request.files.get("photo"))
     height = image.height
     width = image.width
     image.thumbnail(size=(250, 250))
     stream = BytesIO()
     image.save(stream, ext)
-
+    # end
     image = GalleryImage(img_filename=filename, img_data=blob, img_thumb=stream.getvalue(), img_width=width, img_height=height, user_id=current_user.id)
     db.session.add(image)
     db.session.commit()
@@ -134,5 +129,5 @@ def upload():
 
 
 if __name__ == "__main__":
-    db.create_all()
+    db.create_all()  # creating tables in the database
     app.run(debug=False)
