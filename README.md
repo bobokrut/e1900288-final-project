@@ -140,4 +140,4 @@ For documentation, I chose code comments since this is small project and only fo
 
 ## Deployment
 
-This project is deployed to Heroku
+This project is deployed to Heroku using [GitHub Actions](https://github.com/bobokrut/e1900288-final-project/actions)
