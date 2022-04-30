@@ -1,11 +1,13 @@
 import pytest
-from app import app, db
-from models import User, GalleryImage
+from app import create_app 
+from extensions import db
+from gallery.models import GalleryImage
+from user.models import User
 from flask_login import current_user
 from pathlib import Path
 
 resources = Path(__file__).parent / "files"
-
+app = create_app()
 
 @pytest.fixture()
 def anonymous_client():

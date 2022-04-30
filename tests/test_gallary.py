@@ -1,5 +1,5 @@
 from pathlib import Path
-from models import GalleryImage
+from gallery.models import GalleryImage
 from flask_login import current_user
 
 resources = Path(__file__).parent / "files"

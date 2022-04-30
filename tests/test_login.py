@@ -44,7 +44,7 @@ def test_cant_signup_two_times(client_for_signin):
     assert len(response.history) == 1
     assert response.request.path == "/login"
     assert len(get_flashed_messages()) == 1
-    assert "Email address already exists" in get_flashed_messages()
+    assert "Username already exists" in get_flashed_messages()
 
 
 def test_wrong_password(client_for_signin):

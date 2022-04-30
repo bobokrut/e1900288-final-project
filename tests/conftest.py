@@ -1,11 +1,14 @@
-from app import db, app
+from extensions import db
 
 pytest_plugins = [
     "tests.fixtures",
 ]
 
 
+from .fixtures import app
+
 def pytest_configure(config):
     app.config.update({"TESTING": True})
-    db.create_all()
+    with app.app_context():
+        db.create_all()
 
