@@ -62,12 +62,6 @@ def logout():
     return redirect("/login")
 
 
-@user.route("/", methods=["GET"])
-@login_required
-def index():
-    return redirect(url_for("gallery.view_gallery"))
-
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

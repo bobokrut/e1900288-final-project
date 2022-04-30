@@ -5,10 +5,10 @@ from PIL import Image
 from io import BytesIO
 from extensions import db
 
-gallery = Blueprint("gallery", __name__, url_prefix="/gallery")
+gallery = Blueprint("gallery", __name__)
 
 
-@gallery.route('images/<int:img_id>', methods=['GET'])
+@gallery.route('/images/<int:img_id>', methods=['GET'])
 @login_required
 def get_image_from_db(img_id):
     image = GalleryImage.query.filter(GalleryImage.id == img_id, GalleryImage.user_id == current_user.id).with_entities(GalleryImage.img_data).first()
@@ -17,7 +17,7 @@ def get_image_from_db(img_id):
     abort(404)
 
 
-@gallery.route('thumbs/<int:img_id>', methods=['GET'])
+@gallery.route('/thumbs/<int:img_id>', methods=['GET'])
 @login_required
 def get_thumb_from_db(img_id):
     image = GalleryImage.query.filter(GalleryImage.id == img_id, GalleryImage.user_id == current_user.id).with_entities(GalleryImage.img_thumb).first()
@@ -27,7 +27,7 @@ def get_thumb_from_db(img_id):
     abort(404)
 
 
-@gallery.route('upload', methods=["POST"])
+@gallery.route('/upload', methods=["POST"])
 @login_required
 def upload():
     filename = request.files.get("photo").filename
