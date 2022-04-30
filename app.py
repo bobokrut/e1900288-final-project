@@ -1,19 +1,16 @@
 from flask import Flask, request, render_template
-from os import environ
-from dotenv import load_dotenv
 from extensions import db, login_manager
+from env_var import *
 
 import gallery
 import user
 
 
 def create_app(config_object=None):
-    load_dotenv()
-    DATABASE_URL = environ.get("DATABASE_URL")  # in Heroku this variable is always presenting
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL.replace(DATABASE_URL.split("://")[0], "postgresql+psycopg2", 1)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = environ.get("SECRET_KEY")  # is needed for login to work
+    app.config['SECRET_KEY'] = SECRET_KEY  # is needed for login to work
     register_extensions(app)
     register_blueprints(app)
     register_errorhandlers(app)
