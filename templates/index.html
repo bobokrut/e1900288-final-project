@@ -46,7 +46,7 @@
     <div class="position-fixed fixed-top">
         <button type="button" class="btn-close" aria-label="Close" style="float: right" onclick="hide_form()"></button>
     </div>
-    <form method="post" enctype="multipart/form-data" action="/upload">
+    <form method="post" enctype="multipart/form-data" action="{{ url_for("gallery.upload") }}">
         <h1 class=''>File uploading</h1>
         <div class="mb-3">
             <!-- <label for="formFile" class=""></label> -->
@@ -71,13 +71,13 @@
     <div class="p-3" id="my-gallery">
 
         {% for image in images %}
-            <a href="/images/{{ image[0] }}"
+            <a href="{{url_for("gallery.get_image_from_db", img_id=image[0] )}}"
                data-pswp-width="{{ image[1] }}"
                data-pswp-height="{{ image[2] }}"
                target="_blank"
                data-cropped="false"
                 onload="">
-                <img src="{{url_for('get_thumb_from_db', img_id=image[0])}}" alt=""/>
+                <img src="{{url_for('gallery.get_thumb_from_db', img_id=image[0])}}" alt=""/>
             </a>
         {% endfor %}
     </div>
