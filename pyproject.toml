@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "simplegallery"
+version = "0.1.0"
+description = ""
+authors = ["bobokrut <egor-evlampiev@mail.ru>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Flask = "^2.1.2"
+Flask-Login = "^0.6.0"
+Flask-SQLAlchemy = "^2.5.1"
+gunicorn = "^20.1.0"
+python-dotenv = "^0.20.0"
+Pillow = "^9.1.0"
+psycopg2-binary = "^2.9.3"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
