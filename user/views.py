@@ -1,6 +1,7 @@
 from flask import request, redirect, Blueprint, render_template, url_for, flash
+
 from flask_login import login_required, login_user, logout_user
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from extensions import login_manager
 
 from extensions import db
@@ -18,15 +19,15 @@ def signup_post():
     user = User.query.filter_by(username=username).first()
 
     if user:  # checkin if user exists in the table
-        flash('Email address already exists')
-        return redirect(url_for('login_get'))
+        flash('Username already exists')
+        return redirect(url_for('user.login_get'))
 
     new_user = User(email=email, username=username, password=generate_password_hash(password, method='sha256'))
 
     db.session.add(new_user)
     db.session.commit()
 
-    return redirect(url_for('login_get'))
+    return redirect(url_for('user.login_get'))
 
 
 @user.route('/signup', methods=["GET"])
@@ -44,10 +45,10 @@ def login_post():
 
     if not user or not check_password_hash(user.password, password):
         flash('Please check your login details and try again.')
-        return redirect(url_for('login_get'))
+        return redirect(url_for('user.login_get'))
 
     login_user(user, remember=remember)
-    return redirect("/")
+    return redirect(url_for("gallery.view_gallery"))
 
 
 @user.route('/login', methods=['GET'])
@@ -59,7 +60,7 @@ def login_get():
 @login_required
 def logout():
     logout_user()
-    return redirect("/login")
+    return redirect(url_for("user.login_get"))
 
 
 @login_manager.user_loader
