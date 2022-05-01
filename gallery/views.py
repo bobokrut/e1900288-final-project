@@ -1,4 +1,5 @@
 from flask import request, redirect, abort, Blueprint, render_template, Response
+from flask.helpers import url_for
 from flask_login import login_required, current_user
 from .models import GalleryImage
 from PIL import Image
@@ -17,6 +18,15 @@ def get_image_from_db(img_id):
     abort(404)
 
 
+@gallery.route('/images/<int:img_id>', methods=["POST"])
+@login_required
+def delete_image_from_db(img_id):
+
+    GalleryImage.query.filter(GalleryImage.id==img_id, GalleryImage.user_id == current_user.id).delete()
+    db.session.commit()
+    return redirect(url_for("gallery.view_gallery"))
+
+
 @gallery.route('/thumbs/<int:img_id>', methods=['GET'])
 @login_required
 def get_thumb_from_db(img_id):
@@ -30,21 +40,24 @@ def get_thumb_from_db(img_id):
 @gallery.route('/upload', methods=["POST"])
 @login_required
 def upload():
-    filename = request.files.get("photo").filename
-    ext = filename.split(".")[1]
-    ext = ext if ext != "jpg" else "jpeg"
-    blob = request.files.get("photo").read()
+    for file in request.files.getlist("photo"):
 
-    # start of the thumbnail creation
-    image = Image.open(request.files.get("photo"))
-    height = image.height
-    width = image.width
-    image.thumbnail(size=(250, 250))
-    stream = BytesIO()
-    image.save(stream, ext)
-    # end
-    image = GalleryImage(img_filename=filename, img_data=blob, img_thumb=stream.getvalue(), img_width=width, img_height=height, user_id=current_user.id)
-    db.session.add(image)
+        filename = file.filename
+        ext = filename.split(".")[1]
+        ext = ext if ext != "jpg" else "jpeg"
+        blob = file.read()
+
+        # start of the thumbnail creation
+        image = Image.open(file)
+        height = image.height
+        width = image.width
+        image.thumbnail(size=(250, 250))
+        stream = BytesIO()
+        image.save(stream, ext)
+        # end
+        image = GalleryImage(img_filename=filename, img_data=blob, img_thumb=stream.getvalue(), img_width=width, img_height=height, user_id=current_user.id)
+        db.session.add(image)
+
     db.session.commit()
 
     return redirect("/")
