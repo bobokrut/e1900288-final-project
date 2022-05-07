@@ -111,13 +111,13 @@
     <div class="p-3" id="my-gallery">
         <form method="post" id="delete_form"></form>
         {% for image in images %}
-            <a href="{{url_for("gallery.get_image_from_db", img_id=image[0] )}}"
-               data-pswp-width="{{ image[1] }}"
-               data-pswp-height="{{ image[2] }}"
+            <a href="{{url_for("gallery.get_image_from_db", img_id=image.id )}}"
+               data-pswp-width="{{ image.img_width }}"
+               data-pswp-height="{{ image.img_height }}"
                target="_blank"
                data-cropped="false"
                 onload="">
-                <img src="{{url_for('gallery.get_thumb_from_db', img_id=image[0])}}" alt=""/>
+                <img src="{{url_for("gallery.get_thumb_from_db", img_id=image.id)}}" alt=""/>
             </a>
         {% endfor %}
     </div>
