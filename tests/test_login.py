@@ -25,7 +25,7 @@ def test_image_with_login(client):
     assert response.status_code == 200 or b"Image not found" in response.data
     assert len(response.history) == 0
     assert response.request.path == "/images/1"
-    assert current_user.username == 'test'
+    assert current_user.username == "test"
 
 
 def test_gallery_with_login(client):
@@ -34,11 +34,15 @@ def test_gallery_with_login(client):
     assert response.status_code == 200
     assert len(response.history) == 0
     assert response.request.path == "/"
-    assert current_user.username == 'test'
+    assert current_user.username == "test"
 
 
 def test_cant_signup_two_times(client_for_signin):
-    response = client_for_signin.post("/signup", data={"email": "test@test.com", "username": "test", "password": "test"}, follow_redirects=True)
+    response = client_for_signin.post(
+        "/signup",
+        data={"email": "test@test.com", "username": "test", "password": "test"},
+        follow_redirects=True,
+    )
 
     assert response.status_code == 200
     assert len(response.history) == 1
@@ -48,7 +52,9 @@ def test_cant_signup_two_times(client_for_signin):
 
 
 def test_wrong_password(client_for_signin):
-    response = client_for_signin.post("/login", data={"username": "test", "password": "test1"}, follow_redirects=True)
+    response = client_for_signin.post(
+        "/login", data={"username": "test", "password": "test1"}, follow_redirects=True
+    )
     assert response.status_code == 200
     assert len(response.history) == 1
     assert response.request.path == "/login"
@@ -57,7 +63,9 @@ def test_wrong_password(client_for_signin):
 
 
 def test_wrong_username(client_for_signin):
-    response = client_for_signin.post("/login", data={"username": "test1", "password": "test"}, follow_redirects=True)
+    response = client_for_signin.post(
+        "/login", data={"username": "test1", "password": "test"}, follow_redirects=True
+    )
     assert response.status_code == 200
     assert len(response.history) == 1
     assert response.request.path == "/login"

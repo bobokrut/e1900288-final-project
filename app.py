@@ -7,11 +7,13 @@ import gallery
 import user
 
 
-def create_app(config_object=None):
+def create_app() -> Flask:
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL.replace(DATABASE_URL.rsplit("://")[0], "postgresql+psycopg2", 1)
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = SECRET_KEY  # is needed for login to work
+    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL.replace(
+        DATABASE_URL.rsplit("://")[0], "postgresql+psycopg2", 1
+    )
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["SECRET_KEY"] = SECRET_KEY  # is needed for login to work
     register_extensions(app)
     register_blueprints(app)
     register_errorhandlers(app)
@@ -19,22 +21,23 @@ def create_app(config_object=None):
     create_folders()
     return app
 
-def register_extensions(app):
+
+def register_extensions(app: Flask) -> None:
     """Register Flask extensions."""
     db.init_app(app)
     login_manager.init_app(app)
 
 
-def register_blueprints(app):
+def register_blueprints(app: Flask) -> None:
     """Register Flask blueprints."""
     app.register_blueprint(user.views.user)
     app.register_blueprint(gallery.views.gallery)
 
 
-def register_errorhandlers(app):
+def register_errorhandlers(app: Flask) -> None:
     """Register error handlers."""
 
-    def page_not_found(error):
+    def page_not_found(error: str) -> tuple[str, int]:
         """Render error template."""
         # If a HTTPException, pull the `code` attribute; default to 500
         if request.path.startswith("/images/"):
@@ -47,15 +50,13 @@ def register_errorhandlers(app):
     app.errorhandler(404)(page_not_found)
 
 
-
-def settings_for_ext(app):
+def settings_for_ext(app: Flask) -> None:
     with app.app_context():
         db.create_all()  # creating tables in the database
-    login_manager.login_view = 'user.login_get'  # url for login page
+    login_manager.login_view = "user.login_get"  # url for login page
 
 
-
-def create_folders():
+def create_folders() -> None:
     try:
         (Path("./static/gallery") / "images").mkdir(parents=True, exist_ok=True)
         (Path("./static/gallery") / "thumbs").mkdir(parents=True, exist_ok=True)

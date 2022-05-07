@@ -1,5 +1,5 @@
 import pytest
-from app import create_app 
+from app import create_app
 from extensions import db
 from gallery.models import GalleryImage
 from user.models import User
@@ -9,17 +9,21 @@ from pathlib import Path
 resources = Path(__file__).parent / "files"
 app = create_app()
 
+
 @pytest.fixture()
 def anonymous_client():
-    """ fixture with simple client """
+    """fixture with simple client"""
     return app.test_client()
 
 
 @pytest.fixture()
 def client_for_signin(anonymous_client):
-    """ fixture with client that has an account """
+    """fixture with client that has an account"""
     with anonymous_client:
-        anonymous_client.post("/signup", data={"email": "test@test.com", "username": "test", "password": "test"})
+        anonymous_client.post(
+            "/signup",
+            data={"email": "test@test.com", "username": "test", "password": "test"},
+        )
         yield anonymous_client
         User.query.filter(User.username == "test").delete()
         db.session.commit()
@@ -27,9 +31,12 @@ def client_for_signin(anonymous_client):
 
 @pytest.fixture()
 def client(anonymous_client):
-    """ fixture with logged in client """
+    """fixture with logged in client"""
     with anonymous_client:
-        anonymous_client.post("/signup", data={"email": "test@test.com", "username": "test", "password": "test"})
+        anonymous_client.post(
+            "/signup",
+            data={"email": "test@test.com", "username": "test", "password": "test"},
+        )
         anonymous_client.post("/login", data={"username": "test", "password": "test"})
         yield anonymous_client
         User.query.filter(User.username == "test").delete()
@@ -47,7 +54,14 @@ def client_without_images(client):
 
 @pytest.fixture()
 def client_with_image(client_without_images):
-    client_without_images.post("/upload", follow_redirects=True, data={
-        "photo": ((resources / "pexels-pixabay-302743.jpg").open("rb"), "pexels-pixabay-302743.jpg")
-    })
+    client_without_images.post(
+        "/upload",
+        follow_redirects=True,
+        data={
+            "photo": (
+                (resources / "pexels-pixabay-302743.jpg").open("rb"),
+                "pexels-pixabay-302743.jpg",
+            )
+        },
+    )
     yield client_without_images
