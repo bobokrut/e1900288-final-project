@@ -1,8 +1,8 @@
 .env
 venv
-__pycache__
 .idea
 static/gallery
 .mypy_cache
 .pytest_cache
 .python-version
+**/__pycache__
