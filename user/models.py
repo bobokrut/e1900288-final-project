@@ -2,7 +2,7 @@ from flask_login import UserMixin
 from extensions import db
 
 
-class User(UserMixin, db.Mode):  # type: ignore
+class User(UserMixin, db.Model):  # type: ignore
     """Model for the table with users"""
 
     __tablename__ = "users"
