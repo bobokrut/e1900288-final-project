@@ -57,8 +57,5 @@ def settings_for_ext(app: Flask) -> None:
 
 
 def create_folders() -> None:
-    try:
-        (Path("./static/gallery") / "images").mkdir(parents=True, exist_ok=True)
-        (Path("./static/gallery") / "thumbs").mkdir(parents=True, exist_ok=True)
-    except FileExistsError as e:
-        print(e)
+    (Path("./static/gallery") / "images").mkdir(parents=True, exist_ok=True)
+    (Path("./static/gallery") / "thumbs").mkdir(parents=True, exist_ok=True)
