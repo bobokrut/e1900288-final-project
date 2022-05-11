@@ -58,5 +58,5 @@ def settings_for_ext(app: Flask) -> None:
 
 
 def create_folders() -> None:
-    (Path("./static/gallery") / "images").mkdir(parents=True, exist_ok=True)
-    (Path("./static/gallery") / "thumbs").mkdir(parents=True, exist_ok=True)
+    Path(IMAGES_FOLDER).mkdir(parents=True, exist_ok=True)
+    Path(THUMBS_FOLDER).mkdir(parents=True, exist_ok=True)
