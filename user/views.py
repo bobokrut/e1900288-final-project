@@ -1,14 +1,13 @@
 from flask import request, redirect, Blueprint, render_template, url_for, flash
-
 from flask_login import login_required, login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.wrappers.response import Response
 from extensions import login_manager
 
+
 from extensions import db
 from .models import User
 
-from typing import Any
 
 user = Blueprint("user", __name__)
 

@@ -1,8 +1,9 @@
 from pathlib import Path
+
 from flask import Flask, request, render_template
+
 from extensions import db, login_manager
 from env_var import *
-
 import gallery
 import user
 

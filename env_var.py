@@ -1,5 +1,6 @@
-from dotenv import load_dotenv
 from os import environ, path
+
+from dotenv import load_dotenv
 
 load_dotenv()
 

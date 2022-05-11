@@ -1,4 +1,3 @@
-from os import path
 from flask import (
     request,
     redirect,
@@ -10,13 +9,15 @@ from flask import (
 from flask.helpers import url_for
 from flask_login import login_required, current_user
 from werkzeug.wrappers.response import Response
+from PIL import Image
+from psycopg2.errors import UniqueViolation
+
+from os import path, remove
+import uuid
 
 from env_var import IMAGES_FOLDER, THUMBS_FOLDER
 from .models import GalleryImage
-from PIL import Image
 from extensions import db
-import uuid
-from psycopg2.errors import UniqueViolation
 
 gallery = Blueprint("gallery", __name__)
 
