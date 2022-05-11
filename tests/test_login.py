@@ -1,8 +1,9 @@
 from flask_login import current_user
 from flask import get_flashed_messages
+from flask.testing import FlaskClient
 
 
-def test_gallery_without_login(anonymous_client):
+def test_gallery_without_login(anonymous_client: FlaskClient) -> None:
     with anonymous_client:
         response = anonymous_client.get("/", follow_redirects=True)
         assert response.status_code == 200
@@ -10,7 +11,7 @@ def test_gallery_without_login(anonymous_client):
         assert response.request.path == "/login"
 
 
-def test_image_without_login(anonymous_client):
+def test_image_without_login(anonymous_client: FlaskClient) -> None:
     with anonymous_client:
         response = anonymous_client.get("/images/1", follow_redirects=True)
 
@@ -19,7 +20,7 @@ def test_image_without_login(anonymous_client):
         assert response.request.path == "/login"
 
 
-def test_image_with_login(client):
+def test_image_with_login(client: FlaskClient) -> None:
     response = client.get("/images/1")
 
     assert response.status_code == 200 or b"Image not found" in response.data
@@ -28,7 +29,7 @@ def test_image_with_login(client):
     assert current_user.username == "test"
 
 
-def test_gallery_with_login(client):
+def test_gallery_with_login(client: FlaskClient) -> None:
     response = client.get("/")
 
     assert response.status_code == 200
@@ -37,7 +38,7 @@ def test_gallery_with_login(client):
     assert current_user.username == "test"
 
 
-def test_cant_signup_two_times(client_for_signin):
+def test_cant_signup_two_times(client_for_signin: FlaskClient) -> None:
     response = client_for_signin.post(
         "/signup",
         data={"email": "test@test.com", "username": "test", "password": "test"},
@@ -51,7 +52,7 @@ def test_cant_signup_two_times(client_for_signin):
     assert "Username already exists" in get_flashed_messages()
 
 
-def test_wrong_password(client_for_signin):
+def test_wrong_password(client_for_signin: FlaskClient) -> None:
     response = client_for_signin.post(
         "/login", data={"username": "test", "password": "test1"}, follow_redirects=True
     )
@@ -62,7 +63,7 @@ def test_wrong_password(client_for_signin):
     assert "Please check your login details and try again." in get_flashed_messages()
 
 
-def test_wrong_username(client_for_signin):
+def test_wrong_username(client_for_signin: FlaskClient) -> None:
     response = client_for_signin.post(
         "/login", data={"username": "test1", "password": "test"}, follow_redirects=True
     )
