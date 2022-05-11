@@ -41,9 +41,12 @@ def get_image_from_db(img_id: int) -> Response:
 @login_required  # type: ignore
 def delete_image_from_db(img_id: int) -> Response:
 
-    GalleryImage.query.filter(
-        GalleryImage.id == img_id, GalleryImage.user_id == current_user.id  # type: ignore
-    ).delete()
+    image = GalleryImage.query.filter(
+        GalleryImage.id == img_id, GalleryImage.user_id == current_user.id
+    )
+    remove(path.join(IMAGES_FOLDER, image.first().img_path))
+    remove(path.join(THUMBS_FOLDER, image.first().thumb_path))
+    image.delete()
     db.session.commit()
     return redirect(url_for("gallery.view_gallery"))
 
