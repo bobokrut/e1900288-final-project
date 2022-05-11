@@ -22,12 +22,12 @@ from extensions import db
 gallery = Blueprint("gallery", __name__)
 
 
-@gallery.route("/images/<int:img_id>", methods=["GET"])  # type: ignore
-@login_required  # type: ignore
+@gallery.route("/images/<int:img_id>", methods=["GET"])
+@login_required
 def get_image_from_db(img_id: int) -> Response:
     image = (
         GalleryImage.query.filter(
-            GalleryImage.id == img_id, GalleryImage.user_id == current_user.id  # type: ignore
+            GalleryImage.id == img_id, GalleryImage.user_id == current_user.id
         )
         .with_entities(GalleryImage.img_path)
         .first()
@@ -37,8 +37,8 @@ def get_image_from_db(img_id: int) -> Response:
     abort(404)
 
 
-@gallery.route("/images/<int:img_id>", methods=["POST"])  # type: ignore
-@login_required  # type: ignore
+@gallery.route("/images/<int:img_id>", methods=["POST"])
+@login_required
 def delete_image_from_db(img_id: int) -> Response:
 
     image = GalleryImage.query.filter(
@@ -51,13 +51,13 @@ def delete_image_from_db(img_id: int) -> Response:
     return redirect(url_for("gallery.view_gallery"))
 
 
-@gallery.route("/thumbs/<int:img_id>", methods=["GET"])  # type: ignore
-@login_required  # type: ignore
+@gallery.route("/thumbs/<int:img_id>", methods=["GET"])
+@login_required
 def get_thumb_from_db(img_id: int) -> Response:
 
     image = (
         GalleryImage.query.filter(
-            GalleryImage.id == img_id, GalleryImage.user_id == current_user.id  # type: ignore
+            GalleryImage.id == img_id, GalleryImage.user_id == current_user.id
         )
         .with_entities(GalleryImage.thumb_path)
         .first()
@@ -67,8 +67,8 @@ def get_thumb_from_db(img_id: int) -> Response:
     abort(404)
 
 
-@gallery.route("/upload", methods=["POST"])  # type: ignore
-@login_required  # type: ignore
+@gallery.route("/upload", methods=["POST"])
+@login_required
 def upload() -> Response:
     def create_uuid(ext: str) -> tuple[str, str]:
         return f"{str(uuid.uuid4())}.{ext}", f"{str(uuid.uuid4())}.{ext}"
@@ -78,7 +78,7 @@ def upload() -> Response:
         filename: str = file.filename  # type: ignore
         ext = filename.split(".")[1]
         ext = ext if ext != "jpg" else "jpeg"
-        image = Image.open(file)  # type: ignore
+        image = Image.open(file)
         height = image.height
         width = image.width
         image.thumbnail(size=(250, 250))
@@ -91,7 +91,7 @@ def upload() -> Response:
                 thumb_path=thumb_path,
                 img_width=width,
                 img_height=height,
-                user_id=current_user.id,  # type: ignore
+                user_id=current_user.id,
             )
             try:
                 db.session.add(image_to_save)
@@ -106,8 +106,8 @@ def upload() -> Response:
     return redirect("/")
 
 
-@gallery.route("/")  # type: ignore
-@login_required  # type: ignore
+@gallery.route("/")
+@login_required
 def view_gallery() -> str:
-    images = GalleryImage.query.filter(GalleryImage.user_id == current_user.id).all()  # type: ignore
-    return render_template("index.html", images=images, username=current_user.username)  # type: ignore
+    images = GalleryImage.query.filter(GalleryImage.user_id == current_user.id).all()
+    return render_template("index.html", images=images, username=current_user.username)
