@@ -11,6 +11,8 @@ class GalleryImage(db.Model):  # type: ignore
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     img_width = db.Column(db.Integer)
     img_height = db.Column(db.Integer)
+    thumb_width = db.Column(db.Integer)
+    thumb_height = db.Column(db.Integer)
     img_path = db.Column(db.String, unique=True)
     thumb_path = db.Column(db.String, unique=True)
 

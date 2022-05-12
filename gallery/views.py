@@ -79,9 +79,11 @@ def upload() -> Response:
         ext = filename.split(".")[1]
         ext = ext if ext != "jpg" else "jpeg"
         image = Image.open(file)
-        height = image.height
-        width = image.width
+        img_height = image.height
+        img_width = image.width
         image.thumbnail(size=(250, 250))
+        thumb_height = image.height
+        thumb_width = image.width
 
         while True:
             image_path, thumb_path = create_uuid(ext)
@@ -89,8 +91,10 @@ def upload() -> Response:
                 img_name=filename,
                 img_path=image_path,
                 thumb_path=thumb_path,
-                img_width=width,
-                img_height=height,
+                img_width=img_width,
+                img_height=img_height,
+                thumb_height = thumb_height,
+                thumb_width = thumb_width,
                 user_id=current_user.id,
             )
             try:
