@@ -8,7 +8,7 @@ if not environ.get("DATABASE_URL"):
     raise NameError("DATABASE_URL is not defined")
 
 if not environ.get("SECRET_KEY"):
-    raise NameError("DATABASE_URL is not defined")
+    raise NameError("SECRET_KEY is not defined")
 
 DATABASE_URL: str = environ.get("DATABASE_URL")  # type: ignore  NOTE: in Heroku this variable is always presenting
 SECRET_KEY: str = environ.get("SECRET_KEY")  # type: ignore
