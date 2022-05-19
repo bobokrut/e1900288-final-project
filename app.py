@@ -10,9 +10,10 @@ import user
 
 def create_app() -> Flask:
     app = Flask(__name__)
-    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL.replace(
-        DATABASE_URL.rsplit("://")[0], "postgresql+psycopg2", 1
-    )
+    # app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL.replace(
+    #     DATABASE_URL.rsplit("://")[0], "postgresql+psycopg2", 1
+    # )
+    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SECRET_KEY"] = SECRET_KEY  # is needed for login to work
     register_extensions(app)
