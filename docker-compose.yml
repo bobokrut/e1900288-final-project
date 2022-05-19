@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  app:
+    container_name: simple-gallery
+    build: .
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - SECRET_KEY=${SECRET_KEY}
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      # - "${PWD}/gallery.db:/app/gallery.db"
+    restart: always
+    ports:
+      - "8000:8000"
+    # platform: linux/arm/v7
