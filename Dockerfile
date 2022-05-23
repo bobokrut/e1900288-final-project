@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends gcc build-essen
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 RUN python -m venv /venv
 
-COPY pyproject.toml poetry.lock ./
+COPY pyproject.toml poetry.lock .
 RUN . /venv/bin/activate && poetry update && poetry install --no-dev --no-root
 
 
@@ -34,6 +34,5 @@ COPY . .
 
 COPY --from=builder /venv /venv
 
-# RUN . /venv/bin/activate
 ENTRYPOINT ["/venv/bin/gunicorn"]
 CMD ["-b", "0.0.0.0:8000", "app:create_app()"]
